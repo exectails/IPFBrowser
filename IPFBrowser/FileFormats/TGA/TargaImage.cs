@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-// ==========================================================
+﻿// ==========================================================
 // TargaImage
 //
 // Design and implementation by
@@ -32,6 +28,10 @@ using System.Drawing.Imaging;
 //
 // ==========================================================
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
