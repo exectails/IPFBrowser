@@ -64,6 +64,7 @@ namespace IPFBrowser
 			_fileTypes[".effect"] = _fileTypes[".xml"];
 			_fileTypes[".skn"] = _fileTypes[".xml"];
 			_fileTypes[".xsd"] = _fileTypes[".xml"];
+			_fileTypes[".sani"] = _fileTypes[".xml"];
 
 			_fileTypes[".jpg"] = new FileFormat("image.png", PreviewType.Image);
 			_fileTypes[".bmp"] = _fileTypes[".jpg"];
