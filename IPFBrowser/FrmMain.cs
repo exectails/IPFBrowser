@@ -53,6 +53,7 @@ namespace IPFBrowser
 
 			_fileTypes[".lua"] = new FileFormat("page_white_code.png", PreviewType.Text, Lexer.Lua);
 			_fileTypes[".txt"] = new FileFormat("page_white_text.png", PreviewType.Text, Lexer.Null);
+			_fileTypes[".lst"] = new FileFormat("page_white_text.png", PreviewType.Text, Lexer.Null);
 			_fileTypes[".fx"] = new FileFormat("page_white_code.png", PreviewType.Text, Lexer.Cpp);
 
 			_fileTypes[".dds"] = new FileFormat("image.png", PreviewType.DdsImage);
