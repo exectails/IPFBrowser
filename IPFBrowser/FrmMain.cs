@@ -379,7 +379,7 @@ namespace IPFBrowser
 						{
 							ddsImage = new DDSImage(ddsData);
 						}
-						catch (NullReferenceException)
+						catch (Exception)
 						{
 							Invoke((MethodInvoker)delegate
 							{
@@ -405,7 +405,7 @@ namespace IPFBrowser
 							using (var ms = new MemoryStream(tgaData))
 								tgaImage = new TargaImage(ms);
 						}
-						catch (NullReferenceException)
+						catch (Exception)
 						{
 							Invoke((MethodInvoker)delegate
 							{
