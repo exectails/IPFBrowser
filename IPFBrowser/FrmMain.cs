@@ -300,7 +300,7 @@ namespace IPFBrowser
 				foreach (var filePath in paths)
 				{
 					var fileName = Path.GetFileName(filePath);
-					var ext = Path.GetExtension(fileName);
+					var ext = Path.GetExtension(fileName).ToLowerInvariant();
 
 					var lvi = LstFiles.Items.Add(fileName);
 					//lvi.SubItems.Add("0 Byte");
@@ -328,7 +328,7 @@ namespace IPFBrowser
 			var selected = LstFiles.SelectedItems[0];
 			var fileName = (string)selected.Tag;
 			var ipfFile = _files[fileName];
-			var ext = Path.GetExtension(fileName);
+			var ext = Path.GetExtension(fileName).ToLowerInvariant();
 
 			var previewType = PreviewType.None;
 			var lexer = Lexer.Null;
