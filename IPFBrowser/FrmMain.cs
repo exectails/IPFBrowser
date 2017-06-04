@@ -342,186 +342,193 @@ namespace IPFBrowser
 
 			ThreadPool.QueueUserWorkItem(state =>
 			{
-				switch (previewType)
-				{
-					case PreviewType.Text:
-						var txtData = ipfFile.GetData();
-						var text = Encoding.UTF8.GetString(txtData);
+                try
+                {
+                    switch (previewType)
+                    {
+                        case PreviewType.Text:
+                            var txtData = ipfFile.GetData();
+                            var text = Encoding.UTF8.GetString(txtData);
 
-						SetTextPreviewStyle(lexer);
+                            SetTextPreviewStyle(lexer);
 
-						Invoke((MethodInvoker)delegate
-						{
-							TxtPreview.ReadOnly = false;
-							TxtPreview.Text = text;
-							TxtPreview.ReadOnly = true;
-							TxtPreview.Visible = true;
-						});
-						break;
+                            Invoke((MethodInvoker)delegate
+                            {
+                                TxtPreview.ReadOnly = false;
+                                TxtPreview.Text = text;
+                                TxtPreview.ReadOnly = true;
+                                TxtPreview.Visible = true;
+                            });
+                            break;
 
-					case PreviewType.Image:
-						var imgData = ipfFile.GetData();
+                        case PreviewType.Image:
+                            var imgData = ipfFile.GetData();
 
-						Invoke((MethodInvoker)delegate
-						{
-							using (var ms = new MemoryStream(imgData))
-								ImgPreview.Image = Image.FromStream(ms);
-							ImgPreview.Size = ImgPreview.Image.Size;
-							PnlImagePreview.Visible = true;
-						});
-						break;
+                            Invoke((MethodInvoker)delegate
+                            {
+                                using (var ms = new MemoryStream(imgData))
+                                    ImgPreview.Image = Image.FromStream(ms);
+                                ImgPreview.Size = ImgPreview.Image.Size;
+                                PnlImagePreview.Visible = true;
+                            });
+                            break;
 
-					case PreviewType.DdsImage:
-						var ddsData = ipfFile.GetData();
+                        case PreviewType.DdsImage:
+                            var ddsData = ipfFile.GetData();
 
-						DDSImage ddsImage = null;
-						try
-						{
-							ddsImage = new DDSImage(ddsData);
-						}
-						catch (Exception)
-						{
-							Invoke((MethodInvoker)delegate
-							{
-								LblPreview.Text = "Preview failed";
-							});
-							break;
-						}
+                            DDSImage ddsImage = null;
+                            try
+                            {
+                                ddsImage = new DDSImage(ddsData);
+                            }
+                            catch (Exception)
+                            {
+                                Invoke((MethodInvoker)delegate
+                                {
+                                    LblPreview.Text = "Preview failed";
+                                });
+                                break;
+                            }
 
-						Invoke((MethodInvoker)delegate
-						{
-							ImgPreview.Image = ddsImage.BitmapImage;
-							ImgPreview.Size = ImgPreview.Image.Size;
-							PnlImagePreview.Visible = true;
-						});
-						break;
+                            Invoke((MethodInvoker)delegate
+                            {
+                                ImgPreview.Image = ddsImage.BitmapImage;
+                                ImgPreview.Size = ImgPreview.Image.Size;
+                                PnlImagePreview.Visible = true;
+                            });
+                            break;
 
-					case PreviewType.TgaImage:
-						var tgaData = ipfFile.GetData();
+                        case PreviewType.TgaImage:
+                            var tgaData = ipfFile.GetData();
 
-						TargaImage tgaImage = null;
-						try
-						{
-							using (var ms = new MemoryStream(tgaData))
-								tgaImage = new TargaImage(ms);
-						}
-						catch (Exception)
-						{
-							Invoke((MethodInvoker)delegate
-							{
-								LblPreview.Text = "Preview failed";
-							});
-							break;
-						}
+                            TargaImage tgaImage = null;
+                            try
+                            {
+                                using (var ms = new MemoryStream(tgaData))
+                                    tgaImage = new TargaImage(ms);
+                            }
+                            catch (Exception)
+                            {
+                                Invoke((MethodInvoker)delegate
+                                {
+                                    LblPreview.Text = "Preview failed";
+                                });
+                                break;
+                            }
 
-						Invoke((MethodInvoker)delegate
-						{
-							ImgPreview.Image = tgaImage.Image;
-							ImgPreview.Size = ImgPreview.Image.Size;
-							PnlImagePreview.Visible = true;
-						});
-						break;
+                            Invoke((MethodInvoker)delegate
+                            {
+                                ImgPreview.Image = tgaImage.Image;
+                                ImgPreview.Size = ImgPreview.Image.Size;
+                                PnlImagePreview.Visible = true;
+                            });
+                            break;
 
-					case PreviewType.IesTable:
-						var iesData = ipfFile.GetData();
-						var iesFile = new IesFile(iesData);
+                        case PreviewType.IesTable:
+                            var iesData = ipfFile.GetData();
+                            var iesFile = new IesFile(iesData);
 
-						Invoke((MethodInvoker)delegate
-						{
-							GridPreview.SuspendDrawing();
+                            Invoke((MethodInvoker)delegate
+                            {
+                                GridPreview.SuspendDrawing();
 
-							foreach (var iesColumn in iesFile.Columns)
-								GridPreview.Columns.Add(iesColumn.Name, iesColumn.Name);
+                                foreach (var iesColumn in iesFile.Columns)
+                                    GridPreview.Columns.Add(iesColumn.Name, iesColumn.Name);
 
-							foreach (var iesRow in iesFile.Rows)
-							{
-								var row = new DataGridViewRow();
-								row.CreateCells(GridPreview);
+                                foreach (var iesRow in iesFile.Rows)
+                                {
+                                    var row = new DataGridViewRow();
+                                    row.CreateCells(GridPreview);
 
-								var i = 0;
-								foreach (var iesColumn in iesFile.Columns)
-									row.Cells[i++].Value = iesRow[iesColumn.Name];
+                                    var i = 0;
+                                    foreach (var iesColumn in iesFile.Columns)
+                                        row.Cells[i++].Value = iesRow[iesColumn.Name];
 
-								GridPreview.Rows.Add(row);
-							}
+                                    GridPreview.Rows.Add(row);
+                                }
 
-							GridPreview.ResumeDrawing();
+                                GridPreview.ResumeDrawing();
 
-							GridPreview.Visible = true;
-						});
-						break;
+                                GridPreview.Visible = true;
+                            });
+                            break;
 
-					case PreviewType.TtfFont:
-						var pfc = new PrivateFontCollection();
+                        case PreviewType.TtfFont:
+                            var pfc = new PrivateFontCollection();
 
-						try
-						{
-							var ttfData = ipfFile.GetData();
-							using (var ms = new MemoryStream(ttfData))
-							{
-								var fontdata = new byte[ms.Length];
-								ms.Read(fontdata, 0, (int)ms.Length);
+                            try
+                            {
+                                var ttfData = ipfFile.GetData();
+                                using (var ms = new MemoryStream(ttfData))
+                                {
+                                    var fontdata = new byte[ms.Length];
+                                    ms.Read(fontdata, 0, (int)ms.Length);
 
-								unsafe
-								{
-									fixed (byte* pFontData = fontdata)
-										pfc.AddMemoryFont((IntPtr)pFontData, fontdata.Length);
-								}
-							}
-						}
-						catch (Exception)
-						{
-							Invoke((MethodInvoker)delegate
-							{
-								LblPreview.Text = "Preview failed";
-							});
-							break;
-						}
+                                    unsafe
+                                    {
+                                        fixed (byte* pFontData = fontdata)
+                                            pfc.AddMemoryFont((IntPtr)pFontData, fontdata.Length);
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                Invoke((MethodInvoker)delegate
+                                {
+                                    LblPreview.Text = "Preview failed";
+                                });
+                                break;
+                            }
 
-						var fontFamily = pfc.Families.First();
-						var font = new Font(fontFamily, 18, FontStyle.Regular, GraphicsUnit.Pixel);
-						var arialFont = new Font("Arial", 12);
+                            var fontFamily = pfc.Families.First();
+                            var font = new Font(fontFamily, 18, FontStyle.Regular, GraphicsUnit.Pixel);
+                            var arialFont = new Font("Arial", 12);
 
-						var fontInfo = "Name: " + fontFamily.Name;
-						var example1 = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ\n1234567890.:,;'\" (!?) +-*/=";
-						var example2 = "Lorem ipsum dolor sit amet.";
+                            var fontInfo = "Name: " + fontFamily.Name;
+                            var example1 = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ\n1234567890.:,;'\" (!?) +-*/=";
+                            var example2 = "Lorem ipsum dolor sit amet.";
 
-						var bmp = new Bitmap(600, 500);
-						using (var graphics = Graphics.FromImage(bmp))
-						{
-							var infoHeight = graphics.MeasureString(fontInfo, arialFont).Height;
-							var example1Height = graphics.MeasureString(example1, font).Height;
+                            var bmp = new Bitmap(600, 500);
+                            using (var graphics = Graphics.FromImage(bmp))
+                            {
+                                var infoHeight = graphics.MeasureString(fontInfo, arialFont).Height;
+                                var example1Height = graphics.MeasureString(example1, font).Height;
 
-							graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-							graphics.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
+                                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                                graphics.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-							graphics.DrawString(fontInfo, arialFont, Brushes.Black, new Point(0, 0));
-							graphics.DrawString(example1, font, Brushes.Black, new PointF(0, infoHeight + 10));
+                                graphics.DrawString(fontInfo, arialFont, Brushes.Black, new Point(0, 0));
+                                graphics.DrawString(example1, font, Brushes.Black, new PointF(0, infoHeight + 10));
 
-							var point = new PointF(10, infoHeight + 10 + example1Height + 20);
-							foreach (var size in new int[] { 12, 18, 24, 36, 48, 60, 72 })
-							{
-								font = new Font(fontFamily, size, FontStyle.Regular, GraphicsUnit.Pixel);
-								graphics.DrawString(example2, font, Brushes.Black, point);
-								point.Y += font.Height + 5;
-							}
-						}
+                                var point = new PointF(10, infoHeight + 10 + example1Height + 20);
+                                foreach (var size in new int[] { 12, 18, 24, 36, 48, 60, 72 })
+                                {
+                                    font = new Font(fontFamily, size, FontStyle.Regular, GraphicsUnit.Pixel);
+                                    graphics.DrawString(example2, font, Brushes.Black, point);
+                                    point.Y += font.Height + 5;
+                                }
+                            }
 
-						Invoke((MethodInvoker)delegate
-						{
-							ImgPreview.Image = bmp;
-							ImgPreview.Size = ImgPreview.Image.Size;
-							PnlImagePreview.Visible = true;
-						});
-						break;
+                            Invoke((MethodInvoker)delegate
+                            {
+                                ImgPreview.Image = bmp;
+                                ImgPreview.Size = ImgPreview.Image.Size;
+                                PnlImagePreview.Visible = true;
+                            });
+                            break;
 
-					default:
-						Invoke((MethodInvoker)delegate
-						{
-							LblPreview.Text = "No Preview";
-						});
-						break;
-				}
+                        default:
+                            Invoke((MethodInvoker)delegate
+                            {
+                                LblPreview.Text = "No Preview";
+                            });
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK);
+                }
 			});
 		}
 
