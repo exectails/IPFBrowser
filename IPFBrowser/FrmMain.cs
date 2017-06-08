@@ -317,31 +317,31 @@ namespace IPFBrowser
 			LstFiles.EndUpdate();
 		}
 
-		/// <summary>
-		/// Shows preview for selected file.
-		/// </summary>
-		private void Preview()
-		{
-			if (LstFiles.SelectedIndices.Count == 0)
-				return;
+        /// <summary>
+        /// Shows preview for selected file.
+        /// </summary>
+        private void Preview()
+        {
+            if (LstFiles.SelectedIndices.Count == 0)
+                return;
 
-			var selected = LstFiles.SelectedItems[0];
-			var fileName = (string)selected.Tag;
-			var ipfFile = _files[fileName];
-			var ext = Path.GetExtension(fileName).ToLowerInvariant();
+            var selected = LstFiles.SelectedItems[0];
+            var fileName = (string)selected.Tag;
+            var ipfFile = _files[fileName];
+            var ext = Path.GetExtension(fileName).ToLowerInvariant();
 
-			var previewType = PreviewType.None;
-			var lexer = Lexer.Null;
+            var previewType = PreviewType.None;
+            var lexer = Lexer.Null;
 
-			FileFormat fileType;
-			if (_fileTypes.TryGetValue(ext, out fileType))
-			{
-				previewType = fileType.PreviewType;
-				lexer = fileType.Lexer;
-			}
+            FileFormat fileType;
+            if (_fileTypes.TryGetValue(ext, out fileType))
+            {
+                previewType = fileType.PreviewType;
+                lexer = fileType.Lexer;
+            }
 
-			ThreadPool.QueueUserWorkItem(state =>
-			{
+            ThreadPool.QueueUserWorkItem(state =>
+            {
                 try
                 {
                     switch (previewType)
@@ -529,8 +529,8 @@ namespace IPFBrowser
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK);
                 }
-			});
-		}
+            });
+        }
 
 		/// <summary>
 		/// Called when exit option is clicked, closes program.
