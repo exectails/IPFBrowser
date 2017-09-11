@@ -127,7 +127,7 @@ namespace IPFBrowser.FileFormats.IPF
 
 		private byte[] Decompress(byte[] data)
 		{
-			if (this.Ipf.Footer.NewVersion > 11000)
+			if (this.Ipf.Footer.NewVersion > 11000 || this.Ipf.Footer.NewVersion == 0)
 			{
 				var pkw = new PkwareTraditionalEncryptionData("ofO1a0ueXA? [\xFFs h %?");
 				data = pkw.Decrypt(data, data.Length);
