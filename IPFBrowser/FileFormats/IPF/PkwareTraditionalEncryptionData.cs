@@ -60,9 +60,16 @@ namespace IPFBrowser.FileFormats.IPF
 			var cipherText = new byte[length];
 			for (int i = 0; i < length; i++)
 			{
-				byte C = plainText[i];
-				cipherText[i] = (byte)(plainText[i] ^ MagicByte);
-				UpdateKeys(C);
+                if ((i % 2) != 0)
+                {
+					cipherText[i] = plainText[i];
+                }
+				else
+				{
+                    byte C = plainText[i];
+                    cipherText[i] = (byte)(plainText[i] ^ MagicByte);
+                    UpdateKeys(C);
+                }                
 			}
 			return cipherText;
 		}

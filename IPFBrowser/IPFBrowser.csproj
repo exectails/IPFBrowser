@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlHelper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FileFormats\DDS\DDSImage.cs" />
     <Compile Include="FileFormats\IES\IesFile.cs" />
     <Compile Include="FileFormats\IPF\Ipf.cs" />
