@@ -40,6 +40,9 @@
     <ApplicationIcon>ipf_browser.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ookii.Dialogs">
+      <HintPath>..\Libs\Ookii.Dialogs.dll</HintPath>
+    </Reference>
     <Reference Include="ScintillaNET, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\jacobslusser.ScintillaNET.3.5.6\ScintillaNET.dll</HintPath>

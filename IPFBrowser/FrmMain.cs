@@ -122,6 +122,8 @@ namespace IPFBrowser
 				var file = files[0];
 				if (Path.GetExtension(file) == ".ipf")
 					e.Effect = DragDropEffects.Copy;
+				else if (Path.GetExtension(file) == ".ies")
+					e.Effect = DragDropEffects.Copy;
 			}
 		}
 
@@ -158,6 +160,42 @@ namespace IPFBrowser
 		/// <param name="filePath"></param>
 		private void Open(string filePath)
 		{
+			if (Path.GetExtension(filePath) == ".ies")
+			{
+				this.ResetPreview();
+
+				var iesData = File.ReadAllBytes(filePath);
+				var iesFile = new IesFile(iesData);
+
+				Invoke((MethodInvoker)delegate
+				{
+					GridPreview.SuspendDrawing();
+
+					foreach (var iesColumn in iesFile.Columns)
+						GridPreview.Columns.Add(iesColumn.Name, iesColumn.Name);
+
+					foreach (var iesRow in iesFile.Rows)
+					{
+						var row = new DataGridViewRow();
+						row.CreateCells(GridPreview);
+
+						var i = 0;
+						foreach (var iesColumn in iesFile.Columns)
+							row.Cells[i++].Value = iesRow[iesColumn.Name];
+
+						GridPreview.Rows.Add(row);
+					}
+
+					GridPreview.ResumeDrawing();
+
+					GridPreview.Visible = true;
+				});
+
+				SplMain.Visible = true;
+
+				return;
+			}
+
 			// Reset everything
 			TreeFolders.Nodes.Clear();
 			LstFiles.Items.Clear();

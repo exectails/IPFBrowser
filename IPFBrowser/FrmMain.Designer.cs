@@ -51,7 +51,7 @@
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.BtnAbout = new System.Windows.Forms.MenuItem();
 			this.SavExtractFile = new System.Windows.Forms.SaveFileDialog();
-			this.FbdExtractPack = new System.Windows.Forms.FolderBrowserDialog();
+			this.FbdExtractPack = new Ookii.Dialogs.VistaFolderBrowserDialog();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.BtnOpen = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -214,8 +214,8 @@
 			// StatusStrip
 			// 
 			this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.LblVersion,
-            this.LblFileName});
+			this.LblVersion,
+			this.LblFileName});
 			this.StatusStrip.Location = new System.Drawing.Point(0, 576);
 			this.StatusStrip.Name = "StatusStrip";
 			this.StatusStrip.Size = new System.Drawing.Size(964, 24);
@@ -239,15 +239,15 @@
 			// mainMenu1
 			// 
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1,
-            this.menuItem3});
+			this.menuItem1,
+			this.menuItem3});
 			// 
 			// menuItem1
 			// 
 			this.menuItem1.Index = 0;
 			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.BtnMenuOpen,
-            this.BtnExit});
+			this.BtnMenuOpen,
+			this.BtnExit});
 			this.menuItem1.Text = "File";
 			// 
 			// BtnMenuOpen
@@ -265,7 +265,7 @@
 			// 
 			this.menuItem3.Index = 1;
 			this.menuItem3.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.BtnAbout});
+			this.BtnAbout});
 			this.menuItem3.Text = "?";
 			// 
 			// BtnAbout
@@ -283,13 +283,13 @@
 			this.toolStrip1.AutoSize = false;
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.BtnOpen,
-            this.toolStripSeparator1,
-            this.BtnExtractClient,
-            this.BtnExtractPack,
-            this.BtnExtractFile,
-            this.toolStripSeparator2,
-            this.BtnPreview});
+			this.BtnOpen,
+			this.toolStripSeparator1,
+			this.BtnExtractClient,
+			this.BtnExtractPack,
+			this.BtnExtractFile,
+			this.toolStripSeparator2,
+			this.BtnPreview});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -429,7 +429,7 @@
 		private System.Windows.Forms.ToolStripButton BtnExtractPack;
 		private System.Windows.Forms.ToolStripButton BtnExtractFile;
 		private System.Windows.Forms.SaveFileDialog SavExtractFile;
-		private System.Windows.Forms.FolderBrowserDialog FbdExtractPack;
+		private Ookii.Dialogs.VistaFolderBrowserDialog FbdExtractPack;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripButton BtnExtractClient;
 		private System.Windows.Forms.ToolStripButton BtnPreview;

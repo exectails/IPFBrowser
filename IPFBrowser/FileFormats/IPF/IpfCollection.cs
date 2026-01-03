@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace IPFBrowser.FileFormats.IPF
 {
@@ -34,22 +35,33 @@ namespace IPFBrowser.FileFormats.IPF
 
 			foreach (var folder in new string[] { dataFolder, patchFolder })
 			{
-				foreach (var ipfName in Directory.EnumerateFiles(folder, "*.ipf", SearchOption.TopDirectoryOnly))
+				var files = Directory.EnumerateFiles(folder, "*.ipf", SearchOption.TopDirectoryOnly);
+				if (folder == patchFolder)
+				{
+					files = files.OrderBy(a =>
+					{
+						var fileName = Path.GetFileNameWithoutExtension(a);
+						var index = fileName.IndexOf('_');
+						return int.Parse(fileName.Substring(0, index));
+					});
+				}
+
+				foreach (var ipfName in files)
 				{
 					var ipf = new Ipf(ipfName);
 					foreach (var ipfFile in ipf.Files)
 					{
-						if (this.Files.ContainsKey(ipfFile.FullPath))
-						{
-							//if (this.Files[f.fullpath].ipf.Footer.NewVersion > f.ipf.Footer.NewVersion)
-							//	throw new Exception("Version lower?");
+						//if (this.Files.ContainsKey(ipfFile.FullPath))
+						//{
+						//	if (this.Files[f.fullpath].ipf.Footer.NewVersion > f.ipf.Footer.NewVersion)
+						//		throw new Exception("Version lower?");
 
-							//if (this.Files[f.fullpath].ipf.Footer.NewVersion > ipf.Footer.VersionToPatch)
-							//	throw new Exception("Version mismatch?");
+						//	if (this.Files[f.fullpath].ipf.Footer.NewVersion > ipf.Footer.VersionToPatch)
+						//		throw new Exception("Version mismatch?");
 
-							//if (ipf.Footer.VersionToPatch != this.Files[f.fullpath].ipf.Footer.NewVersion + 1)
-							//	throw new Exception("Version mismatch?");
-						}
+						//	if (ipf.Footer.VersionToPatch != this.Files[f.fullpath].ipf.Footer.NewVersion + 1)
+						//		throw new Exception("Version mismatch?");
+						//}
 
 						this.Files[ipfFile.FullPath] = ipfFile;
 					}
