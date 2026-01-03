@@ -122,12 +122,22 @@ namespace IPFBrowser.FileFormats.IPF
 			if (_noCompression.Contains(ext.ToLowerInvariant()))
 				return data;
 
-			return this.Decompress(data);
+			var encrypted = this.Ipf.Footer.NewVersion > 11000 || this.Ipf.Footer.NewVersion == 0;
+
+			try
+			{
+				return this.Decompress(data, encrypted);
+			}
+			catch (InvalidDataException)
+			{
+				// Fallback attempt for files that aren't actually encrypted
+				return Decompress(data, false);
+			}
 		}
 
-		private byte[] Decompress(byte[] data)
+		private byte[] Decompress(byte[] data, bool encrypted)
 		{
-			if (this.Ipf.Footer.NewVersion > 11000 || this.Ipf.Footer.NewVersion == 0)
+			if (encrypted)
 			{
 				var pkw = new PkwareTraditionalEncryptionData("ofO1a0ueXA? [\xFFs h %?");
 				data = pkw.Decrypt(data, data.Length);
