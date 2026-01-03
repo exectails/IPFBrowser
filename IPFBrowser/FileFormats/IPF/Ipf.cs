@@ -55,11 +55,21 @@ namespace IPFBrowser.FileFormats.IPF
 			var fileTableOffset = _br.ReadUInt32();
 			_br.ReadUInt16();
 			_br.ReadUInt32();
-			_br.ReadUInt32(); // compression
+			var compression = _br.ReadUInt32(); // compression
 			this.Footer.PatchVersion = _br.ReadUInt32();
 			this.Footer.NewVersion = _br.ReadUInt32();
 
 			_stream.Position = fileTableOffset;
+
+			// Not sure why we originall denoted this as the "Compression",
+			// but it appears to be a signature that's present in every
+			// IPF, from the earliest to the latest ones. So we'll use it
+			// to check for a valid footer here, since 400769_001001.ipf
+			// is missing its footer for some reason. And we'll semi-silently
+			// skip file loading, as to not interrupt processing other IPFs.
+			var signature = compression; // 50 4B 05 06 "PK.."
+			if (signature != 0x6054b50)
+				this.Footer.FileCount = 0;
 
 			this.Files = new List<IpfFile>();
 			for (int i = 0; i < this.Footer.FileCount; i++)
